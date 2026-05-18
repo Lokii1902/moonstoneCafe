@@ -1,0 +1,25 @@
+{
+  "short_name": "Royal Admin",
+  "name": "Moonstone Café Admin",
+  "description": "Moonstone Café - Admin Dashboard",
+  "icons": [
+    {
+      "src": "/admin192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/admin512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/admin/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#011B33",
+  "background_color": "#ffffff"
+}

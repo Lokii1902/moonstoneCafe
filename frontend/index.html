@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo192.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#011B33" />
+    <meta name="description" content="Moonstone Café - Fine Dining Restaurant" />
+    <link id="pwa-manifest" rel="manifest" href="/manifest.json" />
+    <script>
+      (function() {
+        const manifestLink = document.getElementById('pwa-manifest');
+        const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+        const favicon = document.querySelector('link[rel="icon"]');
+        
+        if (window.location.pathname.startsWith('/admin')) {
+          manifestLink.setAttribute('href', '/manifest-admin.json');
+          if (appleIcon) appleIcon.setAttribute('href', '/admin192.png');
+          if (favicon) favicon.setAttribute('href', '/admin192.png');
+          document.title = "Royal Admin Panel";
+        }
+      })();
+    </script>
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <title>Moonstone Café</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

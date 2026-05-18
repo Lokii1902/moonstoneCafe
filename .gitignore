@@ -1,0 +1,95 @@
+# ==========================================
+# Moonstone Café - Unified .gitignore
+# ==========================================
+
+# --- Dependencies ---
+node_modules/
+**/node_modules/
+jspm_packages/
+web_modules/
+
+# --- Environment Configurations ---
+# Contains sensitive application keys and configurations
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# --- Build & Output Directories ---
+dist/
+**/dist/
+dist-ssr/
+**/dist-ssr/
+build/
+**/build/
+out/
+**/out/
+.next/
+.nuxt/
+.cache/
+**/parcel-cache/
+.svelte-kit/
+
+# --- Application Specific Data ---
+# Ignore dynamically uploaded files but preserve the directory
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# --- Logs ---
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs
+**/logs
+
+# --- IDEs and Editors ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/code-workspace
+.idea/
+*.iws
+*.iml
+*.ipr
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.classpath
+.project
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# --- Diagnostic & Coverage Tools ---
+coverage/
+**/coverage/
+.nyc_output/
+.istanbul.yml
+.eslintcache
+.stylelintcache
+
+# --- System Files & Misc ---
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+desktop.ini
+._*
+*.tmp
+*.temp
+*.swp
+*~
