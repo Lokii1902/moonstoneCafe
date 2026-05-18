@@ -11,10 +11,10 @@ const CartModal = () => {
     const { cart, isCartOpen, setIsCartOpen, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
     const { user } = useAuth();
     const { isOpen } = useRestaurant();
-    const [formData, setFormData] = useState({ 
-        name: user?.name || '', 
-        phone: user?.phone || '', 
-        address: user?.address || '' 
+    const [formData, setFormData] = useState({
+        name: user?.name || '',
+        phone: user?.phone || '',
+        address: user?.address || ''
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isAutoFilled, setIsAutoFilled] = useState(false);
@@ -42,7 +42,7 @@ const CartModal = () => {
         setIsSubmitting(true);
         try {
             const total = getCartTotal();
-            
+
             // 1. Create Razorpay order on backend
             const { data: order } = await api.post('payment/create-order', { amount: total });
 
@@ -74,7 +74,7 @@ const CartModal = () => {
                         };
 
                         const { data } = await api.post('payment/verify', verificationData);
-                        
+
                         toast.success("Payment Successful! Order Placed.");
                         clearCart();
                         setIsSubmitting(false);
@@ -130,9 +130,9 @@ const CartModal = () => {
                     total_price: total,
                     customer_details: formData
                 };
-                
+
                 await api.post('orders/cod', orderData);
-                
+
                 toast.success("Order Placed via Cash on Delivery!");
                 clearCart();
                 setIsCartOpen(false);
@@ -249,22 +249,22 @@ const CartModal = () => {
 
                             <div className="flex gap-6 py-2">
                                 <label className="flex items-center gap-2 text-sm font-bold text-heritage-espresso cursor-pointer">
-                                    <input 
-                                        type="radio" 
-                                        name="paymentMethod" 
-                                        value="online" 
-                                        checked={paymentMethod === 'online'} 
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="online"
+                                        checked={paymentMethod === 'online'}
                                         onChange={(e) => setPaymentMethod(e.target.value)}
                                         className="accent-heritage-saffron scale-125"
                                     />
                                     Pay Online
                                 </label>
                                 <label className="flex items-center gap-2 text-sm font-bold text-heritage-espresso cursor-pointer">
-                                    <input 
-                                        type="radio" 
-                                        name="paymentMethod" 
-                                        value="cod" 
-                                        checked={paymentMethod === 'cod'} 
+                                    <input
+                                        type="radio"
+                                        name="paymentMethod"
+                                        value="cod"
+                                        checked={paymentMethod === 'cod'}
                                         onChange={(e) => setPaymentMethod(e.target.value)}
                                         className="accent-heritage-saffron scale-125"
                                     />
@@ -275,11 +275,10 @@ const CartModal = () => {
                             <button
                                 type="submit"
                                 disabled={isSubmitting || !isOpen}
-                                className={`w-full py-4 font-bold uppercase tracking-widest text-xs rounded-xl transition-all shadow-lg ${
-                                    isOpen 
-                                    ? 'bg-heritage-saffron text-white hover:bg-heritage-espresso' 
-                                    : 'bg-red-50 text-red-300 cursor-not-allowed border border-red-100'
-                                }`}
+                                className={`w-full py-4 font-bold uppercase tracking-widest text-xs rounded-xl transition-all shadow-lg ${isOpen
+                                        ? 'bg-heritage-saffron text-white hover:bg-heritage-espresso'
+                                        : 'bg-red-50 text-red-300 cursor-not-allowed border border-red-100'
+                                    }`}
                             >
                                 {isSubmitting ? 'Sending Order...' : (
                                     !isOpen ? (

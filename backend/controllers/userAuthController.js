@@ -1,7 +1,9 @@
 const db = require('../config/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 
+const client = new OAuth2Client('YOUR_GOOGLE_CLIENT_ID');
 
 const generateToken = (id, name, email) => {
     return jwt.sign({ id, name, email }, process.env.JWT_SECRET || 'fallback_secret', { expiresIn: '30d' });
@@ -83,4 +85,53 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+// @desc    Google Login
+// @route   POST /api/users/auth/google
+// @access  Public
+const googleLogin = async (req, res) => {
+    const { credential } = req.body;
+    
+    if (!credential) {
+        return res.status(400).json({ message: 'Google credential missing' });
+    }
+    
+    try {
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: 'YOUR_GOOGLE_CLIENT_ID'
+        });
+        
+        const payload = ticket.getPayload();
+        const { email, name, picture, sub } = payload;
+        
+        let [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        let user;
+        
+        if (rows.length === 0) {
+            const [result] = await db.query('INSERT INTO users (name, email, google_id, avatar_url) VALUES (?, ?, ?, ?)', [name, email, sub, picture]);
+            user = { id: result.insertId, name, email, google_id: sub, avatar_url: picture };
+        } else {
+            user = rows[0];
+            if (!user.google_id || user.avatar_url !== picture) {
+                await db.query('UPDATE users SET google_id = ?, avatar_url = ? WHERE id = ?', [sub, picture, user.id]);
+                user.google_id = sub;
+                user.avatar_url = picture;
+            }
+        }
+        
+        res.json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone || '',
+            address: user.address || '',
+            avatar_url: user.avatar_url || '',
+            token: generateToken(user.id, user.name, user.email)
+        });
+    } catch (error) {
+        console.error('Google Auth Error:', error);
+        res.status(401).json({ message: 'Invalid Google token' });
+    }
+};
+
+module.exports = { registerUser, loginUser, googleLogin };

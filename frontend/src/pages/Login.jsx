@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { GoogleLogin } from '@react-oauth/google';
 
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
@@ -13,6 +14,24 @@ const Login = () => {
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    };
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            const { data } = await api.post('/users/auth/google', {
+                credential: credentialResponse.credential
+            });
+            login(data, data.token);
+            toast.success(`Welcome, ${data.name}!`);
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || 'Google Auth Failed');
+        }
+    };
+
+    const handleGoogleError = () => {
+        toast.error('Google Login Failed');
     };
 
     const handleEmailAuth = async (e) => {
@@ -85,6 +104,21 @@ const Login = () => {
                         {isLoginMode ? 'Sign In' : 'Create Account'}
                     </button>
                 </form>
+
+                <div className="mt-8 mb-6 flex items-center justify-center relative">
+                    <div className="border-t border-heritage-espresso/10 w-full"></div>
+                    <span className="bg-white px-4 text-[10px] uppercase font-bold text-heritage-espresso/40 tracking-widest absolute">Or</span>
+                </div>
+
+                <div className="flex justify-center mb-6">
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={handleGoogleError}
+                        theme="outline"
+                        text="continue_with"
+                        shape="pill"
+                    />
+                </div>
 
                 <div className="mt-8 text-center">
                     <button 
