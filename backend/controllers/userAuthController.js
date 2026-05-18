@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 
-const client = new OAuth2Client('YOUR_GOOGLE_CLIENT_ID');
+const GOOGLE_CLIENT_ID = '508825841965-trhil23cc52o2m2crr35sr3krt65ifl6.apps.googleusercontent.com';
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 const generateToken = (id, name, email) => {
     return jwt.sign({ id, name, email }, process.env.JWT_SECRET || 'fallback_secret', { expiresIn: '30d' });
@@ -98,7 +99,7 @@ const googleLogin = async (req, res) => {
     try {
         const ticket = await client.verifyIdToken({
             idToken: credential,
-            audience: 'YOUR_GOOGLE_CLIENT_ID'
+            audience: GOOGLE_CLIENT_ID
         });
         
         const payload = ticket.getPayload();

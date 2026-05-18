@@ -6,7 +6,7 @@ import { AuthProvider } from './context/AuthContext'
 import { SocketProvider } from './context/SocketContext'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
-const clientId = 'YOUR_GOOGLE_CLIENT_ID';
+const clientId = '508825841965-trhil23cc52o2m2crr35sr3krt65ifl6.apps.googleusercontent.com';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
