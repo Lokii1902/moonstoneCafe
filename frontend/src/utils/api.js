@@ -39,7 +39,8 @@ api.interceptors.request.use(
             config.url.includes('/admin/') ||
             (config.url.includes('/upload/') && !config.url.includes('/upload/avatar')) ||
             (config.url.includes('/status') && !config.url.includes('/cancel')) ||
-            config.url.includes('/payment-status')
+            config.url.includes('/payment-status') ||
+            (config.method === 'put' && config.url.includes('/restaurant'))
         );
         
         if (isAdminOnlyRoute && adminToken) {

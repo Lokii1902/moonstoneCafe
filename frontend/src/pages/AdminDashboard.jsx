@@ -324,25 +324,16 @@ const AdminDashboard = () => {
     };
 
     const updateOperatingMode = async (mode) => {
+        const updated = { ...restaurantInfo, operating_mode: mode };
         try {
-            setRestaurantInfo(prev => {
-                const updated = { ...prev, operating_mode: mode };
-                // Call API with the guaranteed fresh state
-                api.put('/restaurant', updated).then(() => {
-                    toast.success(`Restaurant is now ${mode === 'forced_open' ? 'ALWAYS OPEN' : mode === 'forced_closed' ? 'ALWAYS CLOSED' : 'following the SCHEDULE'}`);
-                    // Re-fetch to get latest calculated is_open status
-                    api.get('/restaurant').then(res => {
-                        if (res.data) setRestaurantInfo(res.data);
-                    });
-                }).catch(err => {
-                    toast.error("Failed to sync with server");
-                    fetchData(); // Rollback to server state
-                });
-                return updated;
-            });
+            await api.put('/restaurant', updated);
+            toast.success(`Restaurant is now ${mode === 'forced_open' ? 'ALWAYS OPEN' : mode === 'forced_closed' ? 'ALWAYS CLOSED' : 'following the SCHEDULE'}`);
+            // Re-fetch to get the latest calculated is_open status
+            const res = await api.get('/restaurant');
+            if (res.data) setRestaurantInfo(res.data);
         } catch (error) {
-            console.error(error);
-            toast.error("Failed to update operating mode");
+            console.error('Failed to update operating mode:', error);
+            toast.error("Failed to update operating mode. Please try again.");
         }
     };
 
