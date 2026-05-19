@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '508825841965-7jhtaro7qvumgrvfhq6fpdfqbif19osd.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '508825841965-f588dm40o5umi07vg132r6stdrhti8ms.apps.googleusercontent.com';
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 const generateToken = (id, name, email) => {
